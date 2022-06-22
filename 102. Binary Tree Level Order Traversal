@@ -27,9 +27,9 @@ public:
             TreeNode* node = pp.first;
             int curLevel = pp.second;//0
              if(node->left)
-                 qq.push({root->left,curLevel+1});
+                 qq.push({node->left,curLevel+1});
              if(node->right)
-                 qq.push({root->right,curLevel+1});
+                 qq.push({node->right,curLevel+1});
              if(curLevel != level){
                  level++;
                  result.push_back(row);
