@@ -16,19 +16,20 @@ typedef struct {
 class Solution {
 public:
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-        vector<vector<int>> res;
-	//  Our condition here is to print in vertical order based on oriz distance from root but
-	//  value as same vertical and horiz. must be in value order .. 
-	// we have to use Map of Map here... 
+   	vector<vector<int>> res;
+	//  Our condition here is to print in vertical order based on orig distance from root 
+	//  no lies on same vertical and horiz. must be in value order .. 
+	// we have to use Map of Map of vector here... 
 	// outer map based on horizontal .. inner map for vertical .. array 
-	map<int, map<int, vector<int> > > hashMap;
+	map<int, map<int, vector<int> > > hashMap; // key1 horz ... key2 vertical vector for values at 
+	                                           // same X,Y
 	
 	queue <_QNODE> que;
 	_QNODE qnode;
 	qnode.Tnode = root;
 	qnode.ver_depth = 0;
 	qnode.hor_dist = 0;
-	que.push(qnode);
+	que.push(qnode);  /// LEVEL order Traversal
 	while (!que.empty())
 	{
 		_QNODE popped = que.front();
@@ -52,7 +53,6 @@ public:
 		hashMap[popped.hor_dist][popped.ver_depth].push_back(popped.Tnode->val);
 	}
 	////////////
-	int X = hashMap.size();
 	map<int, map<int, vector<int> > >::iterator itR = hashMap.begin();
 	for (itR; itR != hashMap.end(); itR++)
 	{
@@ -68,6 +68,5 @@ public:
 		res.push_back(temp);
 	}
 	return res;
-        
     }
 };
