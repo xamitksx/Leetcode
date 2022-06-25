@@ -1,0 +1,73 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+typedef struct {
+	TreeNode * Tnode;
+	int hor_dist;
+	int ver_depth;
+}_QNODE;
+
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        vector<vector<int>> res;
+	//  Our condition here is to print in vertical order based on oriz distance from root but
+	//  value as same vertical and horiz. must be in value order .. 
+	// we have to use Map of Map here... 
+	// outer map based on horizontal .. inner map for vertical .. array 
+	map<int, map<int, vector<int> > > hashMap;
+	
+	queue <_QNODE> que;
+	_QNODE qnode;
+	qnode.Tnode = root;
+	qnode.ver_depth = 0;
+	qnode.hor_dist = 0;
+	que.push(qnode);
+	while (!que.empty())
+	{
+		_QNODE popped = que.front();
+		que.pop();
+		_QNODE insert;
+		if (popped.Tnode->left)
+		{
+			insert.Tnode = popped.Tnode->left;
+			insert.ver_depth = popped.ver_depth + 1;
+			insert.hor_dist = popped.hor_dist - 1;
+			que.push(insert);
+		}
+		if (popped.Tnode->right)
+		{
+			insert.Tnode = popped.Tnode->right;
+			insert.ver_depth = popped.ver_depth + 1;
+			insert.hor_dist = popped.hor_dist + 1;
+			que.push(insert);
+		}
+		/// insert it in hash a
+		hashMap[popped.hor_dist][popped.ver_depth].push_back(popped.Tnode->val);
+	}
+	////////////
+	int X = hashMap.size();
+	map<int, map<int, vector<int> > >::iterator itR = hashMap.begin();
+	for (itR; itR != hashMap.end(); itR++)
+	{
+		map<int, vector<int> >::iterator itC = itR->second.begin();
+		vector<int> temp;
+		for (itC; itC != itR->second.end(); itC++)
+		{
+			if (itC->second.size() > 1)
+				sort(itC->second.begin(), itC->second.end());
+			temp.insert(temp.end(), itC->second.begin(), itC->second.end());
+		}
+		///// insert temp resul as per its distance horizontal
+		res.push_back(temp);
+	}
+	return res;
+        
+    }
+};
