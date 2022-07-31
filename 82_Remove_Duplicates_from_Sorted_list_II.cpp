@@ -51,7 +51,7 @@ public:
         if (curr->next && curr->val == curr->next->val)
         {
             int matched_value = curr->val;
-            while (curr->val==matched_value)
+            while (curr && curr->val==matched_value)
             {
                 curr = removeNode(curr,matched_value);
                 prev->next = curr;
